@@ -1,98 +1,129 @@
-# 🌟 Sofia - Your Personal Home Assistant! 🌟
+# Sofia AI - Your Personal Assistant 🤖
 
-Welcome to **Sofia** — a friendly home assistant designed to make life easier, especially for disabled individuals. Whether you need to turn on the lights, translate text into Braille, or control your computer with just hand gestures, Sofia’s got your back! Built with accessibility in mind, Sofia brings AI magic into your life and helps you navigate the world with ease. ✨
-
-## 🎉 What Can Sofia Do?
-Sofia comes packed with superpowers designed for **effortless use**, making her perfect for disabled individuals or anyone who loves convenience!
-
-### 🗣️ Chat Like a Pro!
-Talk to Sofia and she talks back! From light control to casual conversations, she listens to you like the best buddy ever. No complicated commands or typing needed — just your voice.
-
-### 💡 Light Control via Voice
-With just a few simple words, Sofia can turn on or off your Arduino-powered lights. Whether you have mobility challenges or just want to stay comfy, Sofia handles the lights for you!  
-Say it loud:  
-*“Hey Sofia, turn on the light!”*  
-*“Sofia, turn off the light!”*
-
-### 🔤 Braille Translator Mode (Mode 4)
-Got a word? Sofia’s got the translation! Designed for individuals with visual impairments, Sofia can translate spoken words into Braille using LEDs. Inclusivity at its finest! 💡🔡
-
-### 🖱️ Jedi-Level Mouse Control (Mode 3)
-Wave your hand and control your mouse like a Jedi! No need for touchpads or mice — use hand gestures to move your mouse and click. Perfect for anyone with limited dexterity. The Force is strong with this one!
-
-### 🖐️ Gesture-Powered Light Control (Mode 2)
-Hand gestures aren’t just for talking — they can now control your lights too! Put up a few fingers, and Sofia gets the message. This feature is especially useful for individuals with limited mobility. ✋💡
-
-### 🤖 Ask Sofia Anything!
-Not sure what to do? Need some life advice? Sofia taps into OpenAI's powers to generate smart, friendly, and sometimes funny responses to your questions. She’s like your personal AI assistant with a bit more flair! ✨
+Welcome to Sofia, your very own **System Organized Assistant**! 🚀
+Sofia is a voice-activated AI designed to assist you with a variety of tasks, from controlling lights to translating text into Braille. With an intuitive speech recognition system and a smart interaction model, Sofia is here to make your life easier! 
 
 ---
 
-## 🛠️ What You’ll Need
-Before you and Sofia can start transforming your life, here’s what you need:
+## 🎙️ Features
 
-### Hardware:
-- **Arduino board** (We used an Arduino UNO, but feel free to use your fave!).
-- LEDs for Braille display (perfect for visually impaired users).
-- A **Microphone** for voice commands.
-- A **Webcam** for Jedi-level hand gestures.
+### 1. **Voice Commands** 🗣️
+Sofia listens to your commands and responds accordingly. Just say *"Hello Sofia"* and start interacting!
 
-### Software:
-- **Python Libraries** to install:
-   ```bash
-   pip install pyttsx3 pyaudio SpeechRecognition pyfirmata openai cv2 numpy cvzone mouse
-   ```
-- Upload the **Standard Firmata** firmware to your Arduino using the Arduino IDE.
+### 2. **Arduino Integration** ⚡
+Control your Arduino-connected devices effortlessly. Turn lights on/off with a simple voice command or even with hand gestures!
 
-- Don’t forget your **OpenAI API Key!** 🔑  
-   Add it to the script like so:
-   ```python
-   openai.api_key = "your-api-key-here"
-   ```
+### 3. **Hand Gesture Recognition** ✋
+Sofia can interpret hand gestures using a camera and turn lights on/off based on your finger movements.
+
+### 4. **Virtual Mouse Control** 🖱️
+Move your cursor and click using just hand movements. No mouse? No problem!
+
+### 5. **Braille Mode** 🔠
+Convert spoken words into Braille patterns using LEDs, making it a great learning tool for the visually impaired.
+
+### 6. **AI Chat Integration** 🧠
+Need information, conversation, or just a bit of AI-generated wisdom? Sofia is powered by the Ollama AI model to provide smart responses!
 
 ---
 
-## 🚀 Let’s Get This Party Started!
-1. Clone this repository and hop into the code.
-2. Connect your Arduino, LEDs, microphone, and webcam.
-3. Run Sofia:
-   ```bash
-   python sofia_assistant.py
-   ```
-4. Say “Hi Sofia” and let the magic begin! 🎇
+## 🎛️ How to Use
+
+### **1. Run the Script**
+- Ensure you have all dependencies installed (see Installation section below).
+- Open a terminal or command prompt.
+- Run Sofia using:
+  ```bash
+  python main.py
+  ```
+  (The main code is located in `main.py`. Other execution files include `braille.py` for Braille mode and `ollama_test.py` for AI chat testing.)
+
+### **2. Interact with Sofia**
+- **Start the Conversation:** Say *"Hello Sofia"* to wake her up.
+- **Give Commands:** Sofia responds to various commands like:
+  - "Turn on the light"
+  - "Execute mode 2"
+  - "Translate to Braille"
+  - "What is your name?"
+- **Voice Confirmation:** Sofia will acknowledge and execute commands while responding verbally.
+
+### **3. Use Different Modes**
+#### 🔆 **Mode 1 - Light Control (Voice & Gesture)**
+- Use voice commands like *"Sofia, turn on the light"* to control an Arduino-connected LED.
+- Hand gestures (open/closed palm) can also toggle the light.
+
+#### 🖐️ **Mode 2 - Hand Gesture Recognition**
+- Enables webcam-based hand detection.
+- Controls lights and displays messages based on finger gestures.
+- Open palm = Light ON, Closed fist = Light OFF.
+
+#### 🖱️ **Mode 3 - Virtual Mouse Control**
+- Uses webcam to track hand movement for controlling the cursor.
+- Bringing fingers together simulates a mouse click.
+- Exit by pressing `Q` on the keyboard.
+
+#### 🔠 **Mode 4 - Braille Translator**
+- Sofia listens to your voice and translates words into Braille using LEDs.
+- Each letter is represented by a specific LED pattern.
+- Speak clearly to get accurate results.
+
+### **4. Exit Sofia**
+- Say *"Goodbye Sofia"*, *"No, thank you Sofia"*, or *"Bye"* to stop Sofia and close the program.
 
 ---
 
-## 🗣️ Here’s What You Can Say to Sofia
-- **Meet Sofia**: "Sofia please introduce yourself!"
-- **Voice to Text Magic**: "convert voice to text"
-- **Light Control**: "turn on/off the light"
-- **Braille Mode (Mode 4)**: "execute mode 4" (Sofia will light up the LEDs for you!)
-- **Mouse Control Mode (Mode 3)**: "execute mode 3" (Start moving the mouse with your hands like a boss!)
-- **Light Control with Gestures (Mode 2)**: "execute mode 2" (Wave your hands to turn the lights on/off)
-- **Say Goodbye**: "bye," "no thank you," "goodbye!"
+## 🔌 Arduino Connections
+Sofia integrates with an Arduino board to control LEDs and other hardware components. To set it up:
+
+### **Required Components:**
+- **Arduino Board** (Uno, Mega, or similar)
+- **LEDs** (for light control & Braille mode)
+- **Jumper Wires**
+- **Breadboard**
+
+### **Wiring Setup:**
+- **LED for Light Control:**
+  - Connect the **positive (long leg)** of an LED to **digital pin 9**.
+  - Connect the **negative (short leg)** to **GND**.
+- **Braille Mode LEDs:**
+  - Connect LEDs to **pins 2, 3, 4, 5, 6, and 7** (one for each Braille dot).
+  - Ensure each LED is connected properly to GND.
+- **Powering the Arduino:**
+  - Connect the LEDs to **3.3V** using a breadboard.
+  - Use a **USB cable** to connect to your computer.
+  - Ensure the correct **COM port** is used in the script (`COM3` for Windows, `/dev/ttyUSB0` for Linux/Mac).
+
+### **Uploading Standard Firmata Before Use**
+Before running Sofia, you need to upload the **Standard Firmata** firmware to your Arduino:
+1. Open **Arduino IDE**.
+2. Go to **File > Examples > Firmata > StandardFirmata**.
+3. Select the correct **board** and **port** from the **Tools** menu.
+4. Click **Upload** and wait for the process to complete.
 
 ---
 
-## ✨ Fun Features:
-- **AI Conversations**: Sofia can have fun chats with you! If she doesn't know the answer to your command, she’ll come up with a creative response using OpenAI's GPT-3!
-- **Hand Gestures**: Control things around you like a real-life wizard! 🧙‍♂️ No touch required.
-- **Braille Translation**: Sofia takes inclusivity seriously. She translates spoken words into Braille, lighting up your world in more ways than one.
+## 🛠️ Installation
+To run Sofia, ensure you have the following installed:
+- Python 3.x
+- `pyttsx3` (Text-to-Speech)
+- `pyaudio` (Audio Input)
+- `speech_recognition` (Voice Commands)
+- `pyfirmata` (Arduino Integration)
+- `cv2` & `cvzone` (Hand Tracking)
+- `ollama` (AI Chat)
+- `mouse` (Virtual Mouse Control)
+
+Install dependencies with:
+```bash
+pip install pyttsx3 pyaudio speech_recognition pyfirmata opencv-python cvzone ollama mouse
+```
 
 ---
 
-## 🖥️ How It Works
-- Sofia listens for your voice, understands what you're saying, and responds with a smile (figuratively speaking).
-- She talks to an **Arduino** to control connected devices (like lights).
-- Hand gestures are tracked using **OpenCV** to let you control your computer like you’re in a sci-fi movie.
+## 💡 Fun Easter Eggs!
+Try saying:
+- *"Sofia, introduce yourself"* for a special intro!
+- *"Sofia, what is photosynthesis?"* for a cool light trick! 🌱
 
----
+Enjoy using Sofia! 😃✨
 
-## 📋 License
-Feel free to make Sofia your own. This project is licensed under the MIT License, so go ahead and build cool things with her!
-
----
-
-**Sofia** is your personal home assistant, but she’s especially tailored for those who need a little extra help — making life easier, brighter, and more accessible. 😄 Let’s bring Sofia to life and start making everyday tasks a lot more fun and effortless!
-
----

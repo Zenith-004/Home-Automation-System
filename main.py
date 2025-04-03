@@ -76,7 +76,7 @@ while True:
         talk("Hello, I am Sofia. I was created by Mister Sheldon Ashish Stephen on twenty-first April two thousand and twenty-three.")
         talk("It is a pleasure to meet you all.")
 
-    elif command in ["no thank you Sofia", "no", "bye"]:
+    elif command in ["no thank you Sofia", "no", "bye", "nothing"]:
         talk("Goodbye, sir.")
         break
 
@@ -89,7 +89,119 @@ while True:
     elif command in ["sofia turn on the light", "sofia turn off the light", "turn on the light", "turn off the light"]:
         lights(command)
     
-    elif command in ["execute mode 4","execute mode four","execute mode for","braille mode","Braille mode"]:
+
+
+    ###########################################################  MODE 2   ##########################################################
+    elif command in ["execute mode 2","execute mode two","execute mode to", "mod 2"]:
+
+        import cv2
+        from cvzone.HandTrackingModule import HandDetector
+        import time
+
+        detector=HandDetector(detectionCon=0.8, maxHands=1)
+
+
+        time.sleep(2.0)
+
+        current_key_pressed = set()
+
+        video=cv2.VideoCapture(0)
+
+        while True:
+            ret,frame=video.read()
+            keyPressed = False
+            spacePressed=False
+            key_count=0
+            key_pressed=0   
+            hands,img=detector.findHands(frame)
+            cv2.rectangle(img, (640, 480), (400, 425),(50, 50, 255), -2)
+            if hands:
+                lmList=hands[0]
+                fingerUp=detector.fingersUp(lmList)
+                if fingerUp==[0,0,0,0,0]:
+                    cv2.putText(frame, 'LIGHT: OFF', (440,460), cv2.FONT_HERSHEY_COMPLEX, 1, (255,255,255), 1, cv2.LINE_AA)
+                    board.digital[9].write(1)
+                if fingerUp==[1,1,1,1,1]:
+                    cv2.putText(frame, 'LIGHT ON', (420,460), cv2.FONT_HERSHEY_COMPLEX, 1, (255,255,255), 1, cv2.LINE_AA)
+                    board.digital[9].write(0)
+                if fingerUp==[0,1,0,0,0]:
+                    cv2.putText(frame, 'IS', (420,460), cv2.FONT_HERSHEY_COMPLEX, 1, (255,255,255), 1, cv2.LINE_AA)
+                if fingerUp==[0,1,1,1,0]:
+                    cv2.putText(frame, 'PHOTOSYNTHESIS', (420,460), cv2.FONT_HERSHEY_COMPLEX, 1, (255,255,255), 1, cv2.LINE_AA)
+                if fingerUp==[0,1,1,1,1]:
+                    cv2.putText(frame, 'LIGHT ON', (420,460), cv2.FONT_HERSHEY_COMPLEX, 1, (255,255,255), 1, cv2.LINE_AA)
+                if fingerUp==[1,1,1,1,1]:
+                    cv2.putText(frame, 'LIGHT ON', (420,460), cv2.FONT_HERSHEY_COMPLEX, 1, (255,255,255), 1, cv2.LINE_AA)
+                if fingerUp==[1,0,0,0,1]:
+                    cv2.putText(frame, 'QUIT', (420,460), cv2.FONT_HERSHEY_COMPLEX, 1, (255,255,255), 1, cv2.LINE_AA)
+                    video.release()
+                    cv2.destroyAllWindows()
+                    time.sleep(2.0)
+                    talk("anthing else sir?")
+                    break
+                    
+
+            cv2.imshow("Frame",frame)
+            k=cv2.waitKey(1)
+            if k==ord('q'):
+                break
+
+        video.release()
+        cv2.destroyAllWindows()
+
+
+
+
+    ###########################################################  MODE 3   ##########################################################
+    
+    elif command in ["execute mode 3","execute mode three", "mod 3"]:
+        import cv2
+        import numpy as np
+        import mouse
+        from cvzone.HandTrackingModule import HandDetector
+
+        def mouse_movement(image, x, y, w, h, sensitivity):
+            cx, cy = int(x + w / 2), int(y + h / 2)
+            x_move, y_move = cx - image.shape[1] / 2, cy - image.shape[0] / 2
+            x_move *= -sensitivity # Reverse left and right movements
+            y_move *= sensitivity
+            mouse.move(x_move, y_move, absolute=False, duration=0)
+
+        def mouse_click(image, lmList):
+            x1, y1 = lmList[8][0], lmList[8][1]
+            x2, y2 = lmList[17][0], lmList[17][1]
+            distance = np.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2)
+            if distance < 50: # Adjust this value to change the threshold for the click
+                mouse.click('left')
+
+        cap = cv2.VideoCapture(0)
+        detector = HandDetector(maxHands=1)
+
+        sensitivity = 0.04 # Adjust this value to decrease sensitivity
+
+        while True:
+            ret, image = cap.read()
+            if ret:
+                hands, _ = detector.findHands(image)
+                if hands:
+                    hand = hands[0]
+                    lmList = hand["lmList"]
+                    x, y = lmList[8][0], lmList[8][1]
+                    w, h = lmList[12][0] - lmList[8][0], lmList[12][1] - lmList[8][1]
+                    cv2.rectangle(image, (x, y), (x + w, y + h), (255, 0, 0), 2)
+                    mouse_movement(image, x, y, w, h, sensitivity)
+                    mouse_click(image, lmList)
+
+                cv2.imshow('Hand Tracking', image)
+                if cv2.waitKey(1) & 0xFF == ord('q'):
+                    break
+            else:
+                break
+        cap.release()
+        cv2.destroyAllWindows()
+
+    ###########################################################  MODE 4   ##########################################################
+    elif command in ["execute mode 4","execute mode four","execute mode for","braille mode","Braille mode","mod for", "execute mod 4"]:
         
         # Assuming the LED pins are connected to pins 2 to 7
         led_pins = [2, 3, 4, 5, 6, 7]
@@ -153,113 +265,6 @@ while True:
                 turn_off_leds()
                 time.sleep(1)  # Adjust delay time as needed        
                         
-
-    
-    elif command in ["execute mode 3","execute mode three"]:
-        import cv2
-        import numpy as np
-        import mouse
-        from cvzone.HandTrackingModule import HandDetector
-
-        def mouse_movement(image, x, y, w, h, sensitivity):
-            cx, cy = int(x + w / 2), int(y + h / 2)
-            x_move, y_move = cx - image.shape[1] / 2, cy - image.shape[0] / 2
-            x_move *= sensitivity # Reverse left and right movements
-            y_move *= sensitivity
-            mouse.move(x_move, y_move, absolute=False, duration=0)
-
-        def mouse_click(image, lmList):
-            x1, y1 = lmList[8][0], lmList[8][1]
-            x2, y2 = lmList[17][0], lmList[17][1]
-            distance = np.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2)
-            if distance < 50: # Adjust this value to change the threshold for the click
-                mouse.click('left')
-
-        cap = cv2.VideoCapture(0)
-        detector = HandDetector(maxHands=1)
-
-        sensitivity = 0.04 # Adjust this value to decrease sensitivity
-
-        while True:
-            ret, image = cap.read()
-            if ret:
-                hands, _ = detector.findHands(image)
-                if hands:
-                    hand = hands[0]
-                    lmList = hand["lmList"]
-                    x, y = lmList[8][0], lmList[8][1]
-                    w, h = lmList[12][0] - lmList[8][0], lmList[12][1] - lmList[8][1]
-                    cv2.rectangle(image, (x, y), (x + w, y + h), (255, 0, 0), 2)
-                    mouse_movement(image, x, y, w, h, sensitivity)
-                    mouse_click(image, lmList)
-
-                cv2.imshow('Hand Tracking', image)
-                if cv2.waitKey(1) & 0xFF == ord('q'):
-                    break
-            else:
-                break
-        cap.release()
-        cv2.destroyAllWindows()
-    
-
-    elif command in ["execute mode 2","execute mode two","execute mode to"]:
-
-        import cv2
-        from cvzone.HandTrackingModule import HandDetector
-        import time
-
-        detector=HandDetector(detectionCon=0.8, maxHands=1)
-
-
-        time.sleep(2.0)
-
-        current_key_pressed = set()
-
-        video=cv2.VideoCapture(0)
-
-        while True:
-            ret,frame=video.read()
-            keyPressed = False
-            spacePressed=False
-            key_count=0
-            key_pressed=0   
-            hands,img=detector.findHands(frame)
-            cv2.rectangle(img, (640, 480), (400, 425),(50, 50, 255), -2)
-            if hands:
-                lmList=hands[0]
-                fingerUp=detector.fingersUp(lmList)
-                if fingerUp==[0,0,0,0,0]:
-                    cv2.putText(frame, 'LIGHT: OFF', (440,460), cv2.FONT_HERSHEY_COMPLEX, 1, (255,255,255), 1, cv2.LINE_AA)
-                    board.digital[9].write(1)
-                if fingerUp==[1,1,1,1,1]:
-                    cv2.putText(frame, 'LIGHT ON', (420,460), cv2.FONT_HERSHEY_COMPLEX, 1, (255,255,255), 1, cv2.LINE_AA)
-                    board.digital[9].write(0)
-                if fingerUp==[0,1,0,0,0]:
-                    cv2.putText(frame, 'IS', (420,460), cv2.FONT_HERSHEY_COMPLEX, 1, (255,255,255), 1, cv2.LINE_AA)
-                if fingerUp==[0,1,1,1,0]:
-                    cv2.putText(frame, 'PHOTOSYNTHESIS', (420,460), cv2.FONT_HERSHEY_COMPLEX, 1, (255,255,255), 1, cv2.LINE_AA)
-                if fingerUp==[0,1,1,1,1]:
-                    cv2.putText(frame, 'LIGHT ON', (420,460), cv2.FONT_HERSHEY_COMPLEX, 1, (255,255,255), 1, cv2.LINE_AA)
-                if fingerUp==[1,1,1,1,1]:
-                    cv2.putText(frame, 'LIGHT ON', (420,460), cv2.FONT_HERSHEY_COMPLEX, 1, (255,255,255), 1, cv2.LINE_AA)
-                if fingerUp==[1,0,0,0,1]:
-                    cv2.putText(frame, 'QUIT', (420,460), cv2.FONT_HERSHEY_COMPLEX, 1, (255,255,255), 1, cv2.LINE_AA)
-                    video.release()
-                    cv2.destroyAllWindows()
-                    time.sleep(2.0)
-                    talk("anthing else sir?")
-                    break
-                    
-
-            cv2.imshow("Frame",frame)
-            k=cv2.waitKey(1)
-            if k==ord('q'):
-                break
-
-        video.release()
-        cv2.destroyAllWindows()
-
-
     else:
         # AI Code using Ollama
         client = ollama.Client()
